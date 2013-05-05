@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Iframe for cross origin calls</title>
+<script>
+		function displayMessage (evt) {
+			var message,
+			    parentWindow;
+
+		
+				message = "I got " + evt.data ;
+				parentWindow = evt.source;
+			document.getElementById("received-message").innerHTML = message;
+			parentWindow.postMessage("call from iframe to parentWindow", "*");
+		}
+		
+		if (window.addEventListener) {
+			// For standards-compliant web browsers
+			window.addEventListener("message", displayMessage, false);
+		}
+		else {
+			window.attachEvent("onmessage", displayMessage);
+		}
+	</script>
+</head>
+<body>
+			<h1>Its an iframe<span id="received-message"></span>  </h1>
+</body>
+</html>
