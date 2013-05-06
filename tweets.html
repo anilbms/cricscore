@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>JQuery (cross-domain) JSONP Twitter example</title>
+        <script type="text/javascript"src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+        <script>
+    //based on: http://stackoverflow.com/a/9214163/325251
+//uses Google Feed API - https://developers.google.com/feed/v1/jsondevguide
+
+function GetContent(feedUrl) {
+    var feedApiGetJSON = 'http://live.cricbuzz.com/livecricketscore/2013/2013_T20_LEAGUE/MUM_CHN_MAY05/commentary-push.json?1367752968541&callback=?&q=';
+    $.ajax({
+        url: feedApiGetJSON + feedUrl,
+        dataType: 'jsonp',
+        jsonpCallback: 'JsonpCallback',
+        error: function (e){alert("error occured");console.log(e);}
+    });
+}
+
+function JsonpCallback(data) {
+    
+    alert("hello");
+    
+    console.dir(data);
+    if (data.responseStatus == "201") {
+        //alert(data.responseData.feed.title);
+        for (var i = 0; i < data.responseData.feed.entries.length; i++) {
+            item = "<li>" + "<a href='" + data.responseData.feed.entries[i].link + "'>" + data.responseData.feed.entries[i].title + "</a>" + "</li>"
+            $('#links').append(item);
+        }
+    }
+    else {
+        //alert(data.responseDetails);
+        $('div').append("An error occurred - " + data.responseDetails);
+    }
+}
+
+$(document).ready(function() {
+    GetContent("http://weblogs.asp.net/scottgu/rss.aspx");
+});
+        </script>
+    </head>
+    <body>
+        <ul id="tweets"></ul>
+    </body>
+</html>
