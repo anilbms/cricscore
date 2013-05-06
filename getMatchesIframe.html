@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Live IPL 2013 score</title>
+<script type="text/javascript" >
+		
+</script>
+</head>
+<body>
+	<form id="the-form" action="/">
+		<input type="text" id="my-message" value="Your message">
+		<input type="submit" value="postMessage">
+	</form>
+	<iframe id="da-iframe" src="http://ads.cricbuzz.com/adserver/apis/schedule_feeds/ipl2013.php" style="width=0;height=0;">
+		<script type="text/javascript" >
+			alert("hello");
+		</script>	
+	</iframe>
+	<script type="text/javascript" >
+		window.onload = function () {
+						var iframeWin = document.getElementById("da-iframe").contentWindow,
+							form = document.getElementById("the-form"),
+							myMessage = document.getElementById("my-message"),
+							data = {};
+						iframeWin.onload = function (){
+						
+						iframeWin.document.querySelectorAll('head')[0].appendChild('<scr' + 'ipt type="text/javascript" src="iframeScript.js"></scr' + 'ipt>');
+						};
+						myMessage.select();	
+						form.onsubmit = function () {
+							iframeWin.postMessage(myMessage.value, "*");
+							return false;
+						};
+
+						if (window.addEventListener) {
+							// For standards-compliant web browsers
+							window.addEventListener("message", displayMessage, false);
+						}
+						else {
+							window.attachEvent("onmessage", displayMessage);
+						}
+					};
+				function displayMessage(e){
+					console.log("got message from the iframe");
+				}
+	</script>
+</body>
+</html>
