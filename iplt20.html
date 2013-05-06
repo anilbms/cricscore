@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>JQuery (cross-domain) JSONP Twitter example</title>
+       <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+       <script src="handlebar.js"></script>
+       <style>
+        #team1, #team2, #scoreRun, #Overs {
+            font-weight: bold;
+            }
+
+      #score {
+          display: none;
+          }
+       </style>
+        <script>
+			$(document).ready(function (){
+
+
+    setInterval( function () {
+          $.ajax({
+        url: 'http://dynamic.pulselive.com/dynamic/data/core/cricket/2012/ipl2013/ipl2013-51/scoring.js?_'+(new Date()).getTime()+'=',
+        dataType: 'jsonp',
+        jsonpCallback: 'onScoring',
+        success: function (data){
+            //alert("success");
+            $('#team1').text(data.matchInfo.teams[0].team.fullName);
+            $('#team2').text(data.matchInfo.teams[1].team.fullName);
+            $('#scoreRun').text(''+ data.innings[0].scorecard.runs +'/'+data.innings[0].scorecard.wkts +'');
+            $('#Overs').text( data.innings[0].overProgress);
+            $('#score').css('display', 'block');
+
+
+            if(data.innings.length === 2){
+
+
+                }
+        }
+           });
+    }, 5000);
+});
+        </script>
+    </head>
+    <body>
+        <div id="score">
+            Now match is going on between
+           <span id="team1"></span> vs <span id="team2"></span> <br/>
+            Score: <span id="scoreRun"></span><br/>
+            overs: <span id="Overs"></span><br/>
+        </div>
+    </body>
+</html>
